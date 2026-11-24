@@ -7555,8 +7555,6 @@ NW.totalLv = function () { let t = 0; for (const k in player.x.found) t += playe
 NW.genCost = function () { const f = NW.foundCount(); return nd(10).times(Decimal.pow(6, f)).times(Decimal.pow(2, NW.totalLv() - f)) }
 NW.kwClick = function (i) {
 	const x = player.x
-	if (x.A === i && x.B < 0) { x.A = -1; return }
-	if (x.B === i) { x.B = -1; return }
 	if (x.A < 0) x.A = i
 	else if (x.B < 0) x.B = i
 	else { x.A = x.B; x.B = i }
