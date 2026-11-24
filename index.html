@@ -2215,7 +2215,6 @@ body[data-theme="eyewhite"] .upg, body[data-theme="eyewhite"] .buyable, body[dat
 .pokeFace .milkPortrait { width:110px; height:110px; }
 .bigFrog .milkPortrait { width:116px; height:116px; }
 .famIcon .milkPortrait { width:38px; height:38px; }
-.famInitial { display:inline-grid; place-items:center; width:1.5em; height:1.5em; border-radius:50%; background:#ffe095; color:#543e27; font-weight:bold; }
 .dragonColor { display:inline-flex; align-items:center; gap:9px; }
 .dragonColor .milkPortrait { width:52px; height:52px; }
 .stand { letter-spacing:0; white-space:nowrap; }
@@ -5920,6 +5919,14 @@ const MilkArt = (() => {
   const drawings={calm:()=>frog('calm'),frenzy:()=>frog('frenzy'),choke:()=>frog('choke'),smell:()=>frog('smell'),chicken,dragon}
   const labels={calm:'奶蛙',frenzy:'捧腹大笑的奶蛙',choke:'笑岔气的奶蛙',smell:'捂嘴的奶蛙',chicken:'奶鸡',dragon:'奶龙'}
   function relative(id){
+    if(id==='e'){
+      const orange='#efa246',rim='#ad732f'
+      const feet=p('M57 101L65 102L62 115Q61 118 51 119L44 118L47 115L43 114L54 112ZM83 100L91 101L89 113Q88 116 79 116L72 115L75 112L71 111L82 109Z',orange,rim,1.2)
+      const body=p('M28 26C28 15 36 9 45 10C62 10 67 23 64 38C62 49 54 57 57 64C60 71 72 69 82 65C94 60 104 66 117 56C116 65 113 72 109 76C113 85 107 99 94 105C75 116 46 113 34 101C25 93 24 83 26 74C29 61 43 47 42 39C34 40 28 35 28 26Z',b,edge,1.7)
+      const wing=p('M51 83C58 72 72 75 83 74Q95 73 104 68C101 80 89 93 76 96Q57 100 51 90',y,'#cfaa58',1.4)
+      const bill=p('M30 24Q26 22 24 28Q17 31 9 32Q4 34 9 38C18 42 29 39 35 34Q31 30 30 24Z',orange,rim,1.3)+line('M10 36Q20 38 29 34',rim,1.2)
+      return feet+body+wing+bill+eye(42,24,6)+e(48,34,4.5,2.4,'#f3c699')
+    }
     if(id==='f')return p('M82 69Q99 61 103 42Q108 52 103 66Q113 60 124 60Q119 81 95 83L79 90Z',g)+p('M9 66Q16 42 46 39Q55 33 61 23Q66 33 64 40Q83 44 92 62Q102 81 84 90Q60 102 33 93Q9 88 9 66Z',y,edge,1.2)+p('M16 78Q43 94 81 80Q65 98 35 92Q22 89 16 78Z',b)+eye(28,59,7)+slit(12,72,16)+p('M52 66Q67 67 71 80Q60 84 52 72Z',g)
     if(id==='s') return p('M42 47Q42 21 57 13Q72 6 83 18Q88 25 86 45L96 51Q120 50 121 78Q120 103 97 109L89 122H37L30 111Q7 110 8 89Q7 66 29 54Z',y,edge,1.4)+e(62,96,23,24,b)+eye(54,29,5)+eye(76,28,5)+line('M57 43q8 -4 14 -1','#624729',2)+p('M12 91Q15 74 29 79L50 49L60 54Q51 87 36 102Q20 114 12 99M104 77Q117 74 113 90Q107 108 66 113L41 108L47 98Q76 98 90 85Z',y,edge,1.4)+hand(54,51,-37)+hand(43,103,175)
     const baby=id==='x',cat=id==='c',dog=id==='g',rabbit=id==='r',top=rabbit?40:cat?45:27
@@ -5928,7 +5935,7 @@ const MilkArt = (() => {
     const arms=baby?p('M42 68Q28 74 17 62Q10 56 8 65Q7 76 28 84L40 85M86 72Q99 74 111 62Q120 61 119 68Q117 81 93 87Z',g):''
     return (id==='m'?line('M85 100Q100 111 111 96Q117 86 123 92',edge,3):'')+(ears[id]||'')+arms+e(42,109,12,7,dog?pad:g)+e(85,109,12,7,dog?pad:g)+trunk+(dog?p('M43 35Q31 29 25 48Q19 70 30 70Q41 71 43 51M82 35Q97 29 101 50Q107 68 97 69Q89 69 85 54Z',pad):'')+eye(49,top+17,baby?8:6.5)+eye(77,top+16,baby?8:6.5)+slit(54,top+31,18)+(cat?e(39,108,13,7,g)+e(87,108,13,7,g):'')
   }
-  for(const [id,name] of Object.entries({m:'奶鼠',g:'奶狗',c:'奶猫',r:'奶兔',f:'奶鱼',x:'小奶蛙',s:'西格玛奶蛙'})){drawings[id]=()=>relative(id);labels[id]=name}
+  for(const [id,name] of Object.entries({m:'奶鼠',g:'奶狗',c:'奶猫',r:'奶兔',f:'奶鱼',e:'奶鹅',x:'小奶蛙',s:'西格玛奶蛙'})){drawings[id]=()=>relative(id);labels[id]=name}
   const urls=Object.create(null)
   function url(id){return urls[id]||(urls[id]='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">${defs}${drawings[id]()}</svg>`))}
   function img(id,decorative=false){return `<img class="milkPortrait" data-portrait="${id}" src="${url(id)}" alt="${decorative?'':labels[id]}" draggable="false">`}
@@ -6559,7 +6566,7 @@ NW.famTable = function () {
 	return h + '</table>'
 }
 
-NW.familyIcon = f => f.id === 'e' ? '<span class="famInitial">鹅</span>' : NW.art.img(f.id, true)
+NW.familyIcon = f => NW.art.img(f.id, true)
 NW.lastBoxDisplay = function(text) {
 	let safe = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
 	for (const f of NW.FAM) safe = safe.replace(new RegExp(`(?:${f.icon} )?${f.name}(?=×)`, 'g'), () => NW.familyIcon(f) + ' ' + f.name)
