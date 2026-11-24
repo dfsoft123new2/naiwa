@@ -2219,6 +2219,8 @@ body[data-theme="eyewhite"] .upg, body[data-theme="eyewhite"] .buyable, body[dat
 .dragonColor .milkPortrait { width:52px; height:52px; }
 .stand { letter-spacing:0; white-space:nowrap; }
 .stand .milkPortrait { width:19px; height:19px; }
+.r3Status { display:inline-flex; align-items:center; gap:8px; max-width:100%; }
+.r3Status .milkPortrait { width:48px; height:48px; flex:none; }
 
 </style>
 
@@ -5916,8 +5918,42 @@ const MilkArt = (() => {
     const claws=(x,z,f=1)=>`<g transform="translate(${x} ${z}) scale(${f} 1)">`+e(0,0,2.3,1.8,'#965a31')+e(5,1,2.4,2,'#a76a33')+e(10,2,2,1.6,'#996131')+'</g>'
     return p('M37 64Q23 65 22 51Q22 41 16 42Q7 45 9 59Q10 73 31 81Q32 94 30 106L29 118Q29 123 44 122L48 115Q66 121 84 113L89 120Q101 124 103 116L100 88Q100 78 101 75Q114 72 119 59Q123 45 116 38Q108 33 106 45Q106 58 93 61Z',g,'#bc8932',1.1)+e(68,92,23,21,b)+p('M31 39C31 18 42 6 64 5C84 4 96 16 98 33C100 45 105 52 101 61C95 74 76 78 58 75C41 74 30 63 31 49Z',g,'#c49539',1.1)+de(51,34)+de(79,31)+e(65,47,3.1,4,'#392414')+e(16,53,4.2,3,'#ffa482')+e(114,48,4.3,3.5,'#ffa482')+claws(12,46)+claws(117,41,-1)+claws(32,120)+claws(90,119)
   }
-  const drawings={calm:()=>frog('calm'),frenzy:()=>frog('frenzy'),choke:()=>frog('choke'),smell:()=>frog('smell'),chicken,dragon}
-  const labels={calm:'奶蛙',frenzy:'捧腹大笑的奶蛙',choke:'笑岔气的奶蛙',smell:'捂嘴的奶蛙',chicken:'奶鸡',dragon:'奶龙'}
+  function doubao(){
+    const hair='#322b2b',ink='#3c2923'
+    const back=p('M30 65L29 40C28 19 41 7 62 7C85 4 98 18 98 40L99 65Q85 69 65 64Q48 70 30 65Z',hair,ink,1.4)
+    const body=p('M53 57Q56 64 49 67C38 71 32 82 33 94Q32 101 37 102Q41 102 43 96Q44 105 47 109L48 118Q53 122 59 118L61 108L70 108L72 118Q77 121 82 117L83 107Q88 99 88 90Q92 101 96 98Q101 94 96 82Q92 71 76 65L74 56Z',y,edge,1.2)
+    const belly=p('M44 94Q44 76 61 75Q80 72 85 93Q70 104 46 98Z','#fff1db')+e(35.8,98,4.6,5.5,pad)+e(94,96,4.5,5.4,pad)+e(53,118,6,3.5,pad)+e(77,117.8,6,3.6,pad)
+    const face=p('M39 35Q40 17 64 17Q88 16 91 37L91 44Q97 39 96 46Q96 52 89 53C85 64 74 70 64 69C50 69 39 59 39 47Z',y,edge,.9)
+    const gaze=(x,z)=>p(`M${x-7} ${z}q6 -9 15 -2q-3 10 -14 6Z`,'#fff6e7')+e(x+1,z,4.9,5.8,'#62402c')+e(x+1.5,z+.3,3.1,4.4,ink)+e(x,z-1.8,1.4,1.45,'#fff')+line(`M${x-8} ${z-2}q7 -7 16 -2`,ink,1.4)
+    const fringe=p('M30 65C30 48 26 28 37 16Q47 4 62 7Q70 5 74 10Q85 7 94 20Q100 30 96 45Q92 34 85 29Q78 23 73 16C65 22 54 23 47 32Q39 42 40 66Z',hair,ink,1.2)+line('M35 35Q42 16 61 13','#5a4b46',1.6)
+    return back+body+belly+face+gaze(54,42)+gaze(78,42)+line('M48 34q5 -3 12 -1m13 0q7 -3 12 1',ink,2.1)+p('M61 56Q64 54 66 55Q69 53 72 55Q66 61 61 56Z','#cc855f')+fringe
+  }
+  function niulai(){
+    const coat='url(#calf)',muzzle='url(#muzzle)',rim='#ad5828'
+    const colors='<defs>'+grad('calf','#ffb44c','#ee882e','#c46026')+grad('muzzle','#fff0bc','#ffd59f','#dc9a73')+'</defs>'
+    const bust=p('M14 116Q18 97 42 86L47 74L83 74L91 90Q108 93 116 116Q97 125 66 124Q35 125 14 116Z',coat,rim,1.4)
+    const ears=p('M39 29Q24 29 6 20Q9 43 29 50L42 47ZM89 28Q104 27 120 17Q118 40 100 48L89 46Z',coat,rim,1.4)+p('M12 28Q25 30 32 35L30 43Q20 40 12 28ZM96 34Q104 29 114 26Q111 36 99 40Z','#e89a6c')
+    const horns=p('M32 26Q22 19 24 7Q25 4 27 8Q32 16 43 17Q42 23 32 26ZM86 18Q98 15 101 7Q103 3 104 7Q107 18 97 25Z','#67432e','#513321',1.2)
+    const head=p('M27 42Q25 25 43 17Q60 4 75 11Q87 15 99 20Q106 27 103 46L96 75Q92 97 72 103Q52 103 42 87Q32 68 27 42Z',coat,rim,1.6)
+    const gaze=(x,z)=>p(`M${x-9} ${z+2}q1 -8 9 -8q9 0 11 8q-10 3 -20 0Z`,'#fff3df','#b76834',.75)+e(x-1,z-.6,5.2,4.4,'#734a2d')+e(x-2,z-.5,2.9,3,'#30261d')+e(x-2.8,z-1.8,1,1,'#fff')
+    const brows=p('M34 29Q42 32 50 33L56 37Q43 37 34 29ZM76 34Q83 28 97 26Q88 33 76 36Z','#674323')
+    const nose=p('M43 71Q41 61 51 59Q54 50 64 52Q74 49 81 57Q92 58 95 67Q99 80 92 88C85 98 49 99 41 85Q37 79 43 71Z',muzzle,'#c78658',1.3)+p('M46 72Q48 63 54 63Q53 69 46 72ZM80 61Q86 61 88 69Q82 67 80 61Z','#bd805e')+line('M45 84Q52 88 60 85Q77 82 89 86','#b17858',1.5)
+    return colors+bust+ears+horns+head+gaze(46,46)+gaze(85,43)+brows+nose
+  }
+  function kangaroo(){
+    const fur='url(#roo)',rim='#c38f24',dark='#68371d'
+    const colors='<defs>'+grad('roo','#fff165','#ffd23b','#e8a522')+'</defs>'
+    const tail=p('M75 91Q98 96 116 85Q124 80 123 84C116 104 93 113 71 108Z',fur,rim,1.4)
+    const body=p('M52 52Q68 48 77 59C85 65 102 73 104 89C107 109 85 119 61 118C39 118 19 108 20 91Q21 71 48 63Z',fur,rim,1.5)
+    const feet=p('M38 107Q29 108 19 114Q13 119 24 120L42 119Q53 118 52 112M77 109Q86 110 97 116Q104 121 91 121L71 118Q63 114 68 110Z',fur,rim,1.35)
+    const head=p('M41 30C37 24 34 9 39 5C45 1 50 13 52 23Q62 22 70 25C74 17 88 5 93 10C98 16 87 30 78 35Q82 46 77 57Q72 70 57 70Q39 69 29 60Q24 52 30 44Q36 38 41 30Z',fur,rim,1.45)
+    const gaze=(x,z,r)=>e(x,z,r,r*1.14,'#fff8e2')+e(x-.8,z+.5,r*.63,r*.77,dark)+e(x-.3,z-.9,1,1,'#fff')
+    const face=gaze(46,39,4.2)+gaze(63,41,4.8)+p('M31 49Q36 44 44 48Q50 53 44 58Q39 61 32 57Q28 54 31 49Z',dark)+line('M46 63q6 2 12 -1','#b67e26',1.3)
+    const paws=p('M36 75Q31 82 40 87Q47 91 53 87Q55 83 49 82L43 79M87 74Q93 82 86 87Q79 92 73 88Q70 84 76 82L81 79',fur,rim,1.4)
+    return colors+tail+body+feet+head+face+paws
+  }
+  const drawings={calm:()=>frog('calm'),frenzy:()=>frog('frenzy'),choke:()=>frog('choke'),smell:()=>frog('smell'),chicken,dragon,doubao,niulai,kangaroo}
+  const labels={calm:'奶蛙',frenzy:'捧腹大笑的奶蛙',choke:'笑岔气的奶蛙',smell:'捂嘴的奶蛙',chicken:'奶鸡',dragon:'奶龙',doubao:'奶豆包',niulai:'牛来',kangaroo:'美团袋鼠（肥嘟嘟）'}
   function relative(id){
     if(id==='e'){
       const orange='#efa246',rim='#ad732f'
@@ -7158,7 +7194,7 @@ NW.nTick = function (diff) {
 }
 
 addLayer('n', {
-	name: '牛来', symbol: '牛', position: 0, row: 3,
+	name: '牛来', symbol: NW.art.img('niulai'), position: 0, row: 3,
 	color: '#f08c5a', branches: ['l'],
 	resource: '胶片', baseResource: '奶龙',
 	baseAmount() { return player.l.points },
@@ -7236,7 +7272,7 @@ addLayer('n', {
 	},
 	tabFormat: [
 		'main-display', 'prestige-button', 'resource-display', ['display-text', () => NW.R3NOTE],
-		['display-text', () => `累计票房 <h3 class="box">${format(player.n.box)}</h3>　已拍 ${player.n.films} 部，最高菊瓣 ${player.n.bestR} 分`],
+		['display-text', () => `<div class="r3Status">${NW.art.img('niulai')}<span>累计票房 <h3 class="box">${format(player.n.box)}</h3>　已拍 ${player.n.films} 部，最高菊瓣 ${player.n.bestR} 分</span></div>`],
 		['display-text', () => {
 			const n = player.n, G = NW.GENRES
 			let h = `<div class="taste">观众口味：爱看 ${G[n.hot].i}${G[n.hot].n}（票房 ×${NW.hotMult()}），看腻了 ${G[n.cold].i}${G[n.cold].n}（×0.3）。${(300 - n.tt).toFixed(0)} 秒后换口味。`
@@ -7269,7 +7305,7 @@ NW.trimCards = function () {
 }
 
 addLayer('d', {
-	name: '豆包', symbol: '豆', position: 1, row: 3,
+	name: '豆包', symbol: NW.art.img('doubao'), position: 1, row: 3,
 	color: '#7ec8f0', branches: ['l', 'm'],
 	resource: '豆包', baseResource: '奶龙',
 	baseAmount() { return player.l.points },
@@ -7326,7 +7362,7 @@ addLayer('d', {
 	},
 	tabFormat: [
 		'main-display', 'prestige-button', 'resource-display', ['display-text', () => NW.R3NOTE],
-		['display-text', () => `<div class="ctxWin">上下文窗口：<b>${NW.used()}</b> / ${NW.window()} tokens<div class="ctxBar"><i style="width:${Math.min(100, NW.used() / NW.window() * 100)}%"></i></div>装不下的记忆，豆包就会忘掉。</div>`],
+		['display-text', () => `<div class="ctxWin"><div class="r3Status">${NW.art.img('doubao')}<span>上下文窗口：<b>${NW.used()}</b> / ${NW.window()} tokens</span></div><div class="ctxBar"><i style="width:${Math.min(100, NW.used() / NW.window() * 100)}%"></i></div>装不下的记忆，豆包就会忘掉。</div>`],
 		'blank',
 		['row', [['clickable', 11], ['clickable', 12], ['clickable', 13], ['clickable', 14]]],
 		['row', [['clickable', 21], ['clickable', 22], ['clickable', 23], ['clickable', 24]]],
@@ -7366,7 +7402,7 @@ NW.poopBox = function () {
 }
 
 addLayer('k', {
-	name: '肥嘟嘟袋鼠', symbol: '袋', position: 2, row: 3,
+	name: '肥嘟嘟袋鼠', symbol: NW.art.img('kangaroo'), position: 2, row: 3,
 	color: '#e8c07a', branches: ['m'],
 	resource: '袋鼠', baseResource: '灵感',
 	baseAmount() { return player.m.points },
@@ -7412,7 +7448,7 @@ addLayer('k', {
 	},
 	tabFormat: [
 		'main-display', 'prestige-button', 'resource-display', ['display-text', () => NW.R3NOTE],
-		['display-text', () => `肥嘟嘟的膘：<h3 class="fat">${format(player.k.fat)}</h3>　手上的奶屎：${format(player.k.poop)}　撒过的肥：${format(player.k.fert)}`],
+		['display-text', () => `<div class="r3Status">${NW.art.img('kangaroo')}<span>肥嘟嘟的膘：<h3 class="fat">${format(player.k.fat)}</h3>　手上的奶屎：${format(player.k.poop)}　撒过的肥：${format(player.k.fert)}</span></div>`],
 		['display-text', () => '<span class="hint">米饭会自己长，越长越快，快满时又会变慢。什么时候开饭，你说了算。</span>'],
 		['bar', 'rice'],
 		'blank',
