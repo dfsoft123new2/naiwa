@@ -2223,7 +2223,7 @@ body[data-theme="eyewhite"] .upg, body[data-theme="eyewhite"] .buyable, body[dat
 .r3Status .milkPortrait { width:48px; height:48px; flex:none; }
 
 .phoneStatus, .phoneNav, .phoneTreeIntro, .branchName { display: none; }
-#treeCanvas { transition: none; pointer-events: none; }
+#treeCanvas { width: 100%; height: 100%; transition: none; pointer-events: none; }
 .branchRow { display: flex; justify-content: center; padding-bottom: 50px; }
 .branchNode { margin: 0; }
 
@@ -6618,7 +6618,7 @@ addLayer('w', {
 		const hint = NW.autoPoke() > 0 ? `奶蛙每秒自己笑 ${formatWhole(NW.autoPoke())} 下（自动戳）。` : '连续戳奶蛙，笑意满了它会狂笑；停手两秒以上，笑意会慢慢消退。'
 		const poke = [['bar', 'mirth'], 'blank', ['clickable', 11], ['display-text', `<span class="hint">${hint}</span>`]]
 		const prestige = ['main-display', 'prestige-button', 'resource-display']
-		return (tmp.other.screenWidth < 1024 ? [...poke, 'blank', ...prestige] : [...prestige, 'blank', ...poke]).concat(['blank', 'buyables', 'upgrades'])
+		return (tmp.other.compact ? [...poke, 'blank', ...prestige] : [...prestige, 'blank', ...poke]).concat(['blank', 'buyables', 'upgrades'])
 	},
 })
 
@@ -8152,14 +8152,14 @@ function achievementStyle(layer, id){
 
 
 function updateWidth() {
-	let screenWidth = window.innerWidth
-	let splitScreen = screenWidth >= 1024
-	if (options.forceOneTab) splitScreen = false
-	if (player.navTab == "none") splitScreen = true
+	const screenWidth = document.documentElement?.clientWidth || window.innerWidth
+	// Overflow can inflate innerWidth on touch devices; use the same query as the CSS.
+	const compact = window.matchMedia ? window.matchMedia('(max-width: 1023px)').matches : screenWidth < 1024
+	tmp.other.compact = compact
 	tmp.other.screenWidth = screenWidth
 	tmp.other.screenHeight = window.innerHeight
 
-	tmp.other.splitScreen = splitScreen
+	tmp.other.splitScreen = !compact && (!options.forceOneTab || player.navTab === 'none')
 	tmp.other.lastPoints = player.points
 }
 
@@ -8298,6 +8298,7 @@ function updateTabFormat(layer) {
 		}
 	}
 }
+
 </script>
 	
 	<script>
@@ -9402,7 +9403,7 @@ var systemComponents = {
     'options-tab': {
         template: `
         <div class="optionsPanel">
-            <button v-if="tmp.other.screenWidth < 1024" class="phoneLink" @click="showTab('info-tab')">游戏信息与更新日志 ›</button>
+            <button v-if="tmp.other.compact" class="phoneLink" @click="showTab('info-tab')">游戏信息与更新日志 ›</button>
             <div class="optGroup">
                 <h3 class="optGroupTitle">存档</h3>
                 <div class="optActions">
@@ -10150,7 +10151,6 @@ window.addEventListener("resize", (_=>resizeCanvas()));
 
 function retrieveCanvasData() {
 	let treeCanv = document.getElementById("treeCanvas")
-	let treeTab = document.getElementById("treeTab")
 	if (treeCanv===undefined||treeCanv===null) return false;
 	canvas = treeCanv;
 	ctx = canvas.getContext("2d");
@@ -10161,14 +10161,11 @@ function resizeCanvas() {
 	if (!retrieveCanvasData()) return
 	// Render at the screen's real pixel density so branches stay sharp on high-DPI displays
 	let dpr = window.devicePixelRatio || 1
-	canvas.width = 0;
-    canvas.height = 0;
-	canvas.width  = Math.round(window.innerWidth * dpr);
-	canvas.height = Math.round(window.innerHeight * dpr);
-	canvas.style.width = window.innerWidth + "px";
-	canvas.style.height = window.innerHeight + "px";
+	const width = Math.round(canvas.clientWidth * dpr), height = Math.round(canvas.clientHeight * dpr)
+	if (canvas.width !== width) canvas.width = width
+	if (canvas.height !== height) canvas.height = height
 	ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-		drawTree();
+	drawTree();
 }
 
 
@@ -11173,8 +11170,8 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 
 <body onload="load()" onmousemove="updateMouse(event)">
 	<div id="app">
-		<canvas id="treeCanvas" class="canvas" v-if="!(tmp.gameEnded && !player.keepGoing)"></canvas>
-		<template v-if="tmp.other.screenWidth < 1024 && !(tmp.gameEnded && !player.keepGoing)">
+		<canvas id="treeCanvas" class="canvas" v-if="!(tmp.gameEnded && !player.keepGoing) && (!tmp.other.compact || player.tab === 'none')"></canvas>
+		<template v-if="tmp.other.compact && !(tmp.gameEnded && !player.keepGoing)">
 			<header class="phoneStatus">
 				<strong>{{modInfo.name}}</strong>
 				<span><b>{{format(player.points)}}</b> {{modInfo.pointsName}}</span>
@@ -11230,13 +11227,13 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 			<br><br><br><br>
 			<overlay-head id="fakeHead" :placeholder="true" style="visibility: hidden;">
 			</overlay-head>
-			<div class="phoneTreeIntro" v-if="tmp.other.screenWidth < 1024">
+			<div class="phoneTreeIntro" v-if="tmp.other.compact">
 				<h2>角色树</h2>
 				<button v-if="nodeShown('a')" class="phoneLink" @click="showTab('a')">奶学图鉴 ›</button>
 				<div v-for="(thing, i) in tmp.displayThings" v-if="thing" :key="i" v-html="thing"></div>
 			</div>
-			<layer-tab :layer="player.navTab == 'none' ? player.tab : player.navTab" :key="'left'"></layer-tab>
-			<bg :layer="player.navTab == 'none' ? player.tab : player.navTab" ></bg>
+			<layer-tab :layer="tmp.other.compact ? layoutInfo.startNavTab : (player.navTab == 'none' ? player.tab : player.navTab)" :key="'left'"></layer-tab>
+			<bg :layer="tmp.other.compact ? layoutInfo.startNavTab : (player.navTab == 'none' ? player.tab : player.navTab)"></bg>
 		</div>
 
 		<!-- Popups -->
@@ -11255,10 +11252,10 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 				</div>
 		</div>
 
-		<div v-if="player.navTab !== 'none' && player.tab !== 'none' && !(tmp.gameEnded && !player.keepGoing)" :key="tmp.other.screenWidth < 1024 ? player.tab : 'desktop-detail'" onscroll="resizeCanvas()" v-bind:class="{ fullWidth: player.navTab == 'none' || !tmp.other.splitScreen || !readData(layoutInfo.showTree), col: player.navTab != 'none', right: player.navTab != 'none', fast: true, tab: true}">
+		<div v-if="(tmp.other.compact || player.navTab !== 'none') && player.tab !== 'none' && !(tmp.gameEnded && !player.keepGoing)" :key="tmp.other.compact ? player.tab : 'desktop-detail'" onscroll="resizeCanvas()" v-bind:class="{ fullWidth: player.navTab == 'none' || !tmp.other.splitScreen || !readData(layoutInfo.showTree), col: player.navTab != 'none', right: player.navTab != 'none', fast: true, tab: true}">
 			<div v-for="layer in LAYERS">
 				<div v-if="player.tab==layer">
-					<layer-tab :layer="layer" :back="tmp.other.screenWidth >= 1024" :spacing="tmp.other.screenWidth >= 1024 ? '50px' : null" :key="'left'"></layer-tab>
+					<layer-tab :layer="layer" :back="!tmp.other.compact" :spacing="tmp.other.compact ? null : '50px'" :key="'left'"></layer-tab>
 				</div>
 			</div>
 			<bg :layer="player.tab" ></bg>
