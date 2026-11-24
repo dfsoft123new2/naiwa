@@ -2222,6 +2222,100 @@ body[data-theme="eyewhite"] .upg, body[data-theme="eyewhite"] .buyable, body[dat
 .r3Status { display:inline-flex; align-items:center; gap:8px; max-width:100%; }
 .r3Status .milkPortrait { width:48px; height:48px; flex:none; }
 
+.phoneStatus, .phoneNav, .phoneTreeIntro, .branchName { display: none; }
+#treeCanvas { transition: none; pointer-events: none; }
+.branchRow { display: flex; justify-content: center; padding-bottom: 50px; }
+.branchNode { margin: 0; }
+
+@media (max-width: 1023px) {
+	html { padding: 0; }
+	#app {
+		column-count: auto; column-width: auto; min-height: 0; height: 100%; height: 100dvh;
+		display: grid; grid-template-rows: auto minmax(0, 1fr) auto; grid-template-columns: minmax(0, 1fr);
+		--phone-left: max(12px, env(safe-area-inset-left));
+		--phone-right: max(12px, env(safe-area-inset-right));
+	}
+	.phoneStatus, .phoneNav {
+		position: relative; z-index: 4; margin: 0; box-sizing: border-box;
+		background: var(--background); padding-inline: var(--phone-left) var(--phone-right);
+	}
+	.phoneStatus {
+		grid-row: 1; display: flex; flex-wrap: wrap; gap: 2px 9px; align-items: baseline;
+		padding-block: calc(10px + env(safe-area-inset-top)) 9px; border-bottom: 1px solid var(--hairline-strong);
+	}
+	.phoneStatus > * { margin: 0; }
+	.phoneStatus strong { margin-right: auto; font: 21px var(--font-fun); }
+	.phoneStatus b { color: var(--gilt); font: 21px var(--font-fun); }
+	.phoneStatus small { font-size: 13px; }
+	.phoneNav {
+		grid-row: 3; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px;
+		padding-block: 4px calc(4px + env(safe-area-inset-bottom)); border-top: 1px solid var(--hairline-strong);
+	}
+	.phoneNav button, .phoneLink {
+		margin: 0; min-height: 44px; color: var(--color); font: 16px var(--font-body);
+		background: transparent; border: 0; cursor: pointer;
+	}
+	.phoneNav button { border-radius: 12px; }
+	.phoneNav [aria-current="page"] { background: var(--frog); color: var(--ink); font-weight: bold; }
+	.phoneLink { color: var(--gilt); text-decoration: underline; text-underline-offset: 3px; }
+	button { touch-action: manipulation; }
+	#treeOverlay, #treeTab > br, #fakeHead { display: none; }
+	#treeTab, #app > .tab {
+		grid-area: 2 / 1; position: relative; inset: auto; margin: 0; box-sizing: border-box;
+		width: 100%; max-width: none; min-width: 0; min-height: 0; height: auto; overflow: auto;
+		padding: 16px var(--phone-right) 24px var(--phone-left); overscroll-behavior-y: contain;
+	}
+	#treeTab > .bg, .tab > .bg { inset: 0; }
+	.phoneTreeIntro { display: block; margin: 0 auto 22px; }
+	.phoneTreeIntro h2 { display: inline; vertical-align: middle; }
+	.phoneTreeIntro button { vertical-align: middle; margin-left: 12px; }
+	.branchRow { gap: 8px; padding-bottom: 24px; }
+	.branchRow:empty { display: none; }
+	.branchNode { display: flex; flex-direction: column; align-items: center; width: min(27%, 96px); }
+	.branchNode .treeNode { margin: 0; max-width: 100%; }
+	.branchName { display: block; margin: 7px 0 0; font-size: 14px; background: var(--background); }
+	.upgCol { width: 100%; min-width: 0; max-width: 760px; }
+	.upgRow > div { max-width: 100%; min-width: 0; }
+	.tab .mainDisplay { margin-block: 6px 10px; }
+	.tab .mainDisplay h2 { display: inline; font-size: 32px; }
+	.tab .mainDisplay .mdResource { display: inline; }
+	.tab .reset { max-width: 100%; min-width: 0; min-height: 66px; padding: 8px 16px; }
+	.tab .hint { display: block; max-width: 32em; margin: 8px auto; line-height: 1.55; color: var(--color); }
+	#clickable-w-11 { touch-action: manipulation; }
+	#clickable-w-11 { -webkit-tap-highlight-color: transparent; }
+	#clickable-w-11:active { transform: scale(.97); }
+	.gameBar > div { position: relative; display: block !important; max-width: 100%; }
+	.gameBar .barBorder { box-sizing: border-box; width: 100% !important; }
+	.gameBar .barBG { position: relative; }
+	.gameBar .fill { left: 0; top: 0; width: 100% !important; height: 100% !important; margin: 0; }
+	.gameBar .overlayTextContainer { inset: 0; align-items: center; }
+	.gameBar .overlayText { text-shadow: none; }
+	.optionsPanel, .infoPanel, .challenge, .gallery, .milestone, .milestoneDone { box-sizing: border-box; max-width: 100%; }
+	.infoPanel, .optionsPanel { width: min(100%, 540px); }
+	.opt.optAction, .tabButton { min-height: 44px; }
+	.famTable th, .famTable td { padding-inline: 3px; }
+	.famTable { max-width: 100%; overflow-wrap: anywhere; }
+	.popup-container {
+		position: fixed; top: auto; right: var(--phone-right); bottom: calc(58px + env(safe-area-inset-bottom));
+		width: min(300px, calc(100% - var(--phone-left) - var(--phone-right))); pointer-events: none;
+		max-height: 30vh; overflow: auto;
+	}
+	.popup { width: 100%; box-sizing: border-box; pointer-events: auto; min-height: 44px; margin: 4px 0; padding: 8px 14px; }
+	.popup:not(:last-child) { display: none; }
+	.popup h2 { font-size: 16px; }
+	@media (hover: none) {
+		/* Invisible tooltips otherwise widen scroll containers; allow a focused node to explain its lock. */
+		.tooltipBox:not(:focus):not(.forceTooltip) > .tooltip { display: none; }
+		#clickable-w-11 > .tooltip { display: none; }
+		.tooltipBox:focus > .tooltip { max-width: min(180px, 95%); box-sizing: border-box; }
+	}
+}
+
+@media (max-width: 1023px) and (max-height: 440px) and (orientation: landscape) {
+	#clickable-w-11 { width: 130px !important; height: 130px !important; }
+	#clickable-w-11 .milkPortrait { width: 78px; height: 78px; }
+}
+
 </style>
 
 	<script>
@@ -6520,19 +6614,12 @@ addLayer('w', {
 		34: { title: '奶蛙表情包上热搜', description: '奶蛙越多，重置得到的奶蛙越多。', cost: nd(1e30), unlocked() { return player.l.unlocked }, effect() { return player.w.points.add(10).log10().pow(2) }, effectDisplay() { return '×' + format(this.effect()) } },
 		35: { title: '笑点降低', description: '“笑点”的门槛提高 1e20 倍。', cost: nd(1e45), unlocked() { return player.m.unlocked } },
 	},
-	tabFormat: [
-		'main-display',
-		'prestige-button',
-		'resource-display',
-		'blank',
-		['bar', 'mirth'],
-		'blank',
-		['clickable', 11],
-		['display-text', () => NW.autoPoke() > 0 ? `<span class="hint">奶蛙每秒自己笑 ${formatWhole(NW.autoPoke())} 下（自动戳）。</span>` : '<span class="hint">提示：连续戳奶蛙，笑意满了它会狂笑；停手两秒以上，笑意会慢慢消退。</span>'],
-		'blank',
-		'buyables',
-		'upgrades',
-	],
+	tabFormat() {
+		const hint = NW.autoPoke() > 0 ? `奶蛙每秒自己笑 ${formatWhole(NW.autoPoke())} 下（自动戳）。` : '连续戳奶蛙，笑意满了它会狂笑；停手两秒以上，笑意会慢慢消退。'
+		const poke = [['bar', 'mirth'], 'blank', ['clickable', 11], ['display-text', `<span class="hint">${hint}</span>`]]
+		const prestige = ['main-display', 'prestige-button', 'resource-display']
+		return (tmp.other.screenWidth < 1024 ? [...poke, 'blank', ...prestige] : [...prestige, 'blank', ...poke]).concat(['blank', 'buyables', 'upgrades'])
+	},
 })
 
 // ================= 奶鸡：奶蛋就是盲盒 =================
@@ -9279,13 +9366,14 @@ var systemComponents = {
 	},
 
 	'overlay-head': {
+		props: ['placeholder'],
 		template: `
 		<div class="overlayThing headBlock" style="padding-bottom:7px; width: 90%; z-index: 1000; position: relative">
 		<span v-if="player.devSpeed && player.devSpeed != 1" class="overlayThing headNote">开发倍率： {{format(player.devSpeed)}}x</span>
 		<span v-if="player.offTime !== undefined" class="overlayThing headNote">剩余离线时间： {{formatTime(player.offTime.remain)}}</span>
 		<span class="overlayThing headTitle">{{modInfo.name}}</span>
 		<span v-if="player.points.lt('1e1000')" class="overlayThing headLabel">当前拥有 </span>
-		<h2 class="overlayThing" id="points">{{format(player.points)}}</h2>
+		<h2 class="overlayThing" :id="placeholder ? null : 'points'">{{format(player.points)}}</h2>
 		<span v-if="player.points.lt('1e1e6')" class="overlayThing headUnit"> {{modInfo.pointsName}}</span>
 		<span v-if="canGenPoints()" class="overlayThing headRate">{{tmp.other.oompsMag != 0 ? format(tmp.other.oomps) + " OOM" + (tmp.other.oompsMag < 0 ? "^OOM" : tmp.other.oompsMag > 1 ? "^" + tmp.other.oompsMag : "") + "s" : formatSmall(getPointGen())}}/秒</span>
 		<div v-for="thing in tmp.displayThings" class="overlayThing headThing"><span v-if="thing" v-html="thing"></span></div>
@@ -9316,6 +9404,7 @@ var systemComponents = {
     'options-tab': {
         template: `
         <div class="optionsPanel">
+            <button v-if="tmp.other.screenWidth < 1024" class="phoneLink" @click="showTab('info-tab')">游戏信息与更新日志 ›</button>
             <div class="optGroup">
                 <h3 class="optGroupTitle">存档</h3>
                 <div class="optActions">
@@ -9843,7 +9932,7 @@ function loadVue() {
 			style() {return constructBarStyle(this.layer, this.data)}
 		},
 		template: `
-		<div v-if="tmp[layer].bars && tmp[layer].bars[data].unlocked" v-bind:style="{'position': 'relative'}"><div v-bind:style="[tmp[layer].bars[data].style, style.dims, {'display': 'table'}]">
+		<div class="gameBar" v-if="tmp[layer].bars && tmp[layer].bars[data].unlocked" v-bind:style="{'position': 'relative'}"><div v-bind:style="[tmp[layer].bars[data].style, style.dims, {'display': 'table'}]">
 			<div class = "overlayTextContainer barBorder" v-bind:style="[tmp[layer].bars[data].borderStyle, style.dims]">
 				<span class = "overlayText" v-bind:style="[tmp[layer].bars[data].style, tmp[layer].bars[data].textStyle]" v-html="run(layers[layer].bars[data].display, layers[layer].bars[data])"></span>
 			</div>
@@ -9890,13 +9979,13 @@ function loadVue() {
 		computed: {
 			key() {return this.$vnode.key}
 		},
-		template: `<div>
-		<span class="upgRow" v-for="(row, r) in data"><table>
-			<span v-for="(node, id) in row" style = "{width: 0px}">
+		template: `<div class="branchTree">
+		<div class="branchRow" v-for="(row, r) in data" :key="r">
+			<span class="branchNode" v-for="(node, id) in row" :key="node" v-if="nodeShown(node)">
 				<tree-node :layer='node' :prev='layer' :abb='tmp[node].symbol' :key="key + '-' + r + '-' + id"></tree-node>
+				<span class="branchName" v-if="tmp[node].layerShown && tmp[node].layerShown !== 'ghost'">{{tmp[node].name}}</span>
 			</span>
-			<tr><table><button class="treeNode hidden"></button></table></tr>
-		</span></div>
+		</div></div>
 
 	`
 	})
@@ -10090,7 +10179,8 @@ var colors_theme
 function drawTree() {
 	if (!retrieveCanvasData()) return;
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
-	for (layer in layers){
+	for (const layer in layers){
+		if (!tmp[layer]) continue // Mobile viewport resize can precede layer setup.
 		if (tmp[layer].layerShown == true && tmp[layer].branches){
 			for (branch in tmp[layer].branches)
 				{
@@ -11086,6 +11176,18 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 <body onload="load()" onmousemove="updateMouse(event)">
 	<div id="app">
 		<canvas id="treeCanvas" class="canvas" v-if="!(tmp.gameEnded && !player.keepGoing)"></canvas>
+		<template v-if="tmp.other.screenWidth < 1024 && !(tmp.gameEnded && !player.keepGoing)">
+			<header class="phoneStatus">
+				<strong>{{modInfo.name}}</strong>
+				<span><b>{{format(player.points)}}</b> {{modInfo.pointsName}}</span>
+				<small v-if="canGenPoints()">+{{formatSmall(getPointGen())}} / 秒</small>
+			</header>
+			<nav class="phoneNav" aria-label="游戏导航">
+				<button :aria-current="player.tab === 'w' ? 'page' : null" @click="showTab('w')">戳奶蛙</button>
+				<button :aria-current="player.tab === 'none' ? 'page' : null" @click="showTab('none')">角色树</button>
+				<button :aria-current="player.tab === 'options-tab' ? 'page' : null" @click="showTab('options-tab')">设置</button>
+			</nav>
+		</template>
 
 		<div v-if="false" id="loadingSection" class="fullWidth">
 			<h1>奶蛙正在醒来……如果一直停在这里，请检查网络后刷新页面。</h1>
@@ -11102,7 +11204,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 				<button class="longUpg can" onclick="keepGoing()">继续玩</button>
 			</div>
 		</div>
- 
+
 		<div id="treeOverlay" v-if="!(tmp.gameEnded && !player.keepGoing) && (player.tab === 'none' || tmp.other.splitScreen || !readData(layoutInfo.showTree))" class="treeOverlay" onscroll="resizeCanvas()"
 			v-bind:class="{ 
 			fullWidth: (player.tab == 'none' || player.navTab == 'none'), 
@@ -11128,8 +11230,13 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 		<div v-if="!(tmp.gameEnded && !player.keepGoing) && (player.tab === 'none' || tmp.other.splitScreen)" id="treeTab"  onscroll="resizeCanvas()" 
 			v-bind:class="{ fullWidth: (player.tab == 'none' || player.navTab == 'none'), col: (player.tab !== 'none' && player.navTab !== 'none'), left: (player.tab !== 'none' && player.navTab !== 'none')}">
 			<br><br><br><br>
-			<overlay-head id="fakeHead" style="visibility: hidden;">
+			<overlay-head id="fakeHead" :placeholder="true" style="visibility: hidden;">
 			</overlay-head>
+			<div class="phoneTreeIntro" v-if="tmp.other.screenWidth < 1024">
+				<h2>角色树</h2>
+				<button v-if="nodeShown('a')" class="phoneLink" @click="showTab('a')">奶学图鉴 ›</button>
+				<div v-for="(thing, i) in tmp.displayThings" v-if="thing" :key="i" v-html="thing"></div>
+			</div>
 			<layer-tab :layer="player.navTab == 'none' ? player.tab : player.navTab" :key="'left'"></layer-tab>
 			<bg :layer="player.navTab == 'none' ? player.tab : player.navTab" ></bg>
 		</div>
@@ -11150,10 +11257,10 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 				</div>
 		</div>
 
-		<div v-if="player.navTab !== 'none' && player.tab !== 'none' && !(tmp.gameEnded && !player.keepGoing)" onscroll="resizeCanvas()" v-bind:class="{ fullWidth: player.navTab == 'none' || !tmp.other.splitScreen || !readData(layoutInfo.showTree), col: player.navTab != 'none', right: player.navTab != 'none', fast: true, tab: true}">
+		<div v-if="player.navTab !== 'none' && player.tab !== 'none' && !(tmp.gameEnded && !player.keepGoing)" :key="tmp.other.screenWidth < 1024 ? player.tab : 'desktop-detail'" onscroll="resizeCanvas()" v-bind:class="{ fullWidth: player.navTab == 'none' || !tmp.other.splitScreen || !readData(layoutInfo.showTree), col: player.navTab != 'none', right: player.navTab != 'none', fast: true, tab: true}">
 			<div v-for="layer in LAYERS">
 				<div v-if="player.tab==layer">
-					<layer-tab :layer="layer" :back="'none'" :spacing="'50px'" :key="'left'"></layer-tab>
+					<layer-tab :layer="layer" :back="tmp.other.screenWidth >= 1024" :spacing="tmp.other.screenWidth >= 1024 ? '50px' : null" :key="'left'"></layer-tab>
 				</div>
 			</div>
 			<bg :layer="player.tab" ></bg>
