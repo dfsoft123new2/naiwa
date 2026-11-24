@@ -2221,6 +2221,11 @@ body[data-theme="eyewhite"] .upg, body[data-theme="eyewhite"] .buyable, body[dat
 .stand .milkPortrait { width:19px; height:19px; }
 .r3Status { display:inline-flex; align-items:center; gap:8px; max-width:100%; }
 .r3Status .milkPortrait { width:48px; height:48px; flex:none; }
+.filmScheduleToggle {
+	display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 12px;
+	cursor: pointer; touch-action: manipulation;
+}
+.filmScheduleToggle input:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
 
 .phoneStatus, .phoneNav, .phoneTreeIntro, .branchName { display: none; }
 #treeCanvas { width: 100%; height: 100%; transition: none; pointer-events: none; }
@@ -7370,7 +7375,7 @@ addLayer('n', {
 		['row', [['clickable', 11], ['clickable', 12], ['clickable', 13], ['clickable', 14], ['clickable', 15], ['clickable', 16]]],
 		['row', [['clickable', 21], ['clickable', 22]]],
 		['bar', 'prod'],
-		['display-text', () => NW.u('n', 15) ? `<span class="hint">院线排片：${player.n.auto ? '开' : '关'}</span>` : ''],
+		'film-schedule-toggle',
 		['display-text', () => player.n.log.length ? '<div class="filmLog">' + player.n.log.join('<br>') + '</div>' : ''],
 		'blank', 'milestones', 'upgrades',
 	],
@@ -9697,6 +9702,15 @@ function loadVue() {
 		template: `
 		<button class="smallUpg can" v-bind:style="{'background-color': tmp[data[0]].color}" v-on:click="toggleAuto(data)">{{player[data[0]][data[1]]?"开":"关"}}</button>
 		`
+	})
+
+	Vue.component('film-schedule-toggle', {
+		props: ['layer'],
+		template: `
+		<label v-if="hasUpgrade(layer, 15)" class="filmScheduleToggle">
+			<input type="checkbox" v-model="player[layer].auto">
+			<span>自动排片</span><b aria-hidden="true">{{player[layer].auto ? '开' : '关'}}</b>
+		</label>`
 	})
 
 	Vue.component('prestige-button', {
